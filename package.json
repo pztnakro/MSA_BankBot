@@ -1,0 +1,27 @@
+{
+  "name": "contoso_bot",
+  "version": "1.0.0",
+  "description": "A bot for msa_module3 project",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pztnakro/MSA_Module3Bot.git"
+  },
+  "keywords": [
+    "Contoso",
+    "Bot"
+  ],
+  "author": "Taehyun Kim",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pztnakro/MSA_Module3Bot/issues"
+  },
+  "homepage": "https://github.com/pztnakro/MSA_Module3Bot#readme",
+  "dependencies": {
+    "botbuilder": "^3.12.0",
+    "restify": "^6.3.4"
+  }
+}
