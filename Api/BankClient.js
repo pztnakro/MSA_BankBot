@@ -12,13 +12,18 @@ exports.getExchangeRate = function getData(url, session, baseCurrency, targetCur
         });
     };
 
-
-exports.sendFavouriteFood = function postFavouriteFood(session, username, favouriteFood){
-    var url = 'https://kimbotmsa.azurewebsites.net/tables/BankBot';
-    rest.postFavouriteFood(url, username, favouriteFood);
+// get favourite currency from database
+exports.getFavouriteCurrency = function getData(url, session, username, callback){
+    request.get(url, {'headers':{'ZUMO-API-VERSION': '2.0.0'}}, function(err,res,body){
+        if(err){
+            console.log(err);
+        }else {
+            callback(body, session, username);
+        }
+    });
 };
 
-exports.postFavouriteFood = function getData(url, username, favouriteFood){
+exports.postExchangeRate = function getData(url, username, favouriteCurrency){
     var options = {
         url: url,
         method: 'POST',
@@ -28,7 +33,7 @@ exports.postFavouriteFood = function getData(url, username, favouriteFood){
         },
         json: {
             "username" : username,
-            "favouriteFood" : favouriteFood
+            "favouriteCurrency" : favouriteCurrency
         }
       };
 
@@ -43,7 +48,7 @@ exports.postFavouriteFood = function getData(url, username, favouriteFood){
 };
 
 
-exports.deleteSavedCurrency = function deleteData(url,session, username ,favouriteFood, id, callback){
+exports.deleteSavedCurrency = function deleteData(url,session, username ,favouriteCurrency, id, callback){
     var options = {
         url: url + "\\" + id,
         method: 'DELETE',
@@ -56,7 +61,7 @@ exports.deleteSavedCurrency = function deleteData(url,session, username ,favouri
     request(options,function (err, res, body){
         if( !err && res.statusCode === 200){
             console.log(body);
-            callback(body,session,username, favouriteFood);
+            callback(body,session,username, favouriteCurrency);
         }else {
             console.log(err);
             console.log(res);
