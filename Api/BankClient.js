@@ -12,8 +12,8 @@ exports.getExchangeRate = function getData(url, session, baseCurrency, targetCur
         });
     };
 
-// get favourite currency from database
-exports.getFavouriteCurrency = function getData(url, session, username, callback){
+// get base currency from database
+exports.getBaseCurrency = function getData(url, session, username, callback){
     request.get(url, {'headers':{'ZUMO-API-VERSION': '2.0.0'}}, function(err,res,body){
         if(err){
             console.log(err);
@@ -23,7 +23,7 @@ exports.getFavouriteCurrency = function getData(url, session, username, callback
     });
 };
 
-exports.postExchangeRate = function getData(url, username, favouriteCurrency){
+exports.setBaseCurrency = function getData(url, username, baseCurrency){
     var options = {
         url: url,
         method: 'POST',
@@ -33,7 +33,7 @@ exports.postExchangeRate = function getData(url, username, favouriteCurrency){
         },
         json: {
             "username" : username,
-            "favouriteCurrency" : favouriteCurrency
+            "baseCurrency" : baseCurrency
         }
       };
 
@@ -48,7 +48,7 @@ exports.postExchangeRate = function getData(url, username, favouriteCurrency){
 };
 
 
-exports.deleteSavedCurrency = function deleteData(url,session, username ,favouriteCurrency, id, callback){
+exports.deleteSavedCurrency = function deleteData(url,session, username ,baseCurrency, id, callback){
     var options = {
         url: url + "\\" + id,
         method: 'DELETE',
@@ -61,7 +61,7 @@ exports.deleteSavedCurrency = function deleteData(url,session, username ,favouri
     request(options,function (err, res, body){
         if( !err && res.statusCode === 200){
             console.log(body);
-            callback(body,session,username, favouriteCurrency);
+            callback(body,session,username, baseCurrency);
         }else {
             console.log(err);
             console.log(res);

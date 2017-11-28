@@ -61,7 +61,7 @@ exports.startDialog = function (bot ) {
     });
 
     // Set currency on the currency database
-    bot.dialog('SetCurrency', [
+    bot.dialog('SetBaseCurrency', [
         function (session, args, next) {
             session.dialogData.args = args || {};
             if (!session.conversationData["username"]) {
@@ -71,26 +71,26 @@ exports.startDialog = function (bot ) {
             }
         },
         function (session, results,next) {
-            console.log("1111111111111111");
             // Add this code in otherwise your username will not work.
             if(results.require) {
                 session.conversationData["username"] = results.response;
             }
-            console.log("2222222222222");
+
             // Pulls out the currency entity from the session if it exists
             var currencyEntity = builder.EntityRecognizer.findEntity(session.dialogData.args.intent.entities, 'currency');
             console.log("3333333333333333"+session.dialogData.args.intent.entities);
             
             // Checks if the for entity was found
             if (currencyEntity) {
-                session.send('Thanks for telling me that \'%s\' is added on your currency list', currencyEntity.entity);
+                session.send('Thanks for telling me that \'%s\' is now set as your base currency.', currencyEntity.entity);
                 connData.setUserCurrency(session,session.conversationData['username'],currencyEntity.entity); //<--- CALLL WE WANT
+                //connData.setUserCurrency("nzd", currencyEntity.entity, session);
             } else {
                 session.send("No currency identified! Please try again");
             }
         }
     ]).triggerAction({
-        matches: 'SetCurrency'
+        matches: 'SetBaseCurrency'
     });
 
     // Get currenct currency from the list (DB)
@@ -122,15 +122,16 @@ exports.startDialog = function (bot ) {
     
         // Pulls out the food entity from the session if it exists
         var currencyEntity = builder.EntityRecognizer.findEntity(args.intent.entities, 'currency');
-
+console.log("currencyEntity====="+currencyEntity);
         // Checks if the for entity was found
         if (currencyEntity) {
             session.send('Looking for exchange rates of %s...', currencyEntity.entity);
-            connData.setUserCurrency("nzd", currencyEntity.entity, session);
+            console.log("currencyEntity====="+currencyEntity);
+            exchangeRate.displayExchangeRateCards("nzd", currencyEntity.entity, session);
         } else {
             session.send("No currency identified! Please try again");
         }
-
+        //exchangeRate.displayExchangeRateCards("nzd", "USD", session);
     }).triggerAction({
         matches: 'ShowCurrency'
     });
