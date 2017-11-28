@@ -47,8 +47,7 @@ exports.setBaseCurrency = function getData(url, username, baseCurrency){
       });
 };
 
-
-exports.deleteSavedCurrency = function deleteData(url,session, username ,baseCurrency, id, callback){
+exports.updateSavedCurrency = function updateData(url,session, username ,baseCurrency, id){
     var options = {
         url: url + "\\" + id,
         method: 'DELETE',
@@ -61,7 +60,52 @@ exports.deleteSavedCurrency = function deleteData(url,session, username ,baseCur
     request(options,function (err, res, body){
         if( !err && res.statusCode === 200){
             console.log(body);
-            callback(body,session,username, baseCurrency);
+            //callback(body,session,username, baseCurrency);
+        }else {
+            console.log(err);
+            console.log(res);
+        }
+    })
+
+    // update to a new base currency
+    var options = {
+        url: url,
+        method: 'POST',
+        headers: {
+            'ZUMO-API-VERSION': '2.0.0',
+            'Content-Type':'application/json'
+        },
+        json: {
+            "username" : username,
+            "baseCurrency" : baseCurrency
+        }
+      };
+
+      request(options, function (error, response, body) {
+        if (!error && response.statusCode === 200) {
+            console.log(body);
+        }
+        else{
+            console.log(error);
+        }
+      });
+
+};
+
+exports.deleteSavedCurrency = function deleteData(url,session, username ,baseCurrency, id){
+    var options = {
+        url: url + "\\" + id,
+        method: 'DELETE',
+        headers: {
+            'ZUMO-API-VERSION': '2.0.0',
+            'Content-Type':'application/json'
+        }
+    };
+
+    request(options,function (err, res, body){
+        if( !err && res.statusCode === 200){
+            console.log(body);
+            //callback(body,session,username, baseCurrency);
         }else {
             console.log(err);
             console.log(res);

@@ -3,7 +3,7 @@ var builder = require('botbuilder');
 
 //Calls 'getExchangeRate' in ExchangeRateCard.js with 'displayExchangeRateCards' as callback to get list of exchange rates
 exports.displayExchangeRateCards = function getExchangeRate(baseCurrency, targetCurrency, session){
-    var url ='https://api.fixer.io/latest?base='+baseCurrency+'&symbols='+targetCurrency;
+    var url ='https://api.fixer.io/latest?base='+baseCurrency+'&symbols='+targetCurrency.toUpperCase();
     bankApi.getExchangeRate(url,session, baseCurrency, targetCurrency, displayExchangeRateCards);
 }
 
@@ -12,14 +12,17 @@ function displayExchangeRateCards(message, bCurrency, tCurrency,session){
     var exRates = JSON.parse(message);
 
     //Adds first 5 currency information onto list
-    var currList = exRates.rates.USD;
+    var taCur = tCurrency.toUpperCase().toString();
+    var currList = exRates.rates.taCur;
+    //var currList = exRates.rates.AUD;
     var searchDate = exRates.date;
     var currencyItems = [];
 
     for(var i = 0; i < 1; i++){
         var currItems = {};
-        currItems.title = "New Zealand Dollar(NZD)";
-        currItems.value = currList.toString();
+        currItems.title = "Base Currency: "+bCurrency.toUpperCase().toString();
+        currItems.value = currList;
+        //currItems.value = currList.toString();
         currencyItems.push(currItems);
     }
 
@@ -36,7 +39,7 @@ function displayExchangeRateCards(message, bCurrency, tCurrency,session){
                     "items": [
                         {
                             "type": "TextBlock",
-                            "text": "Your base currency is "+bCurrency.toString(),
+                            "text": "Your target currency is "+tCurrency.toUpperCase().toString(),
                             "size": "large"
                         },
                         {
