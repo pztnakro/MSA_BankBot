@@ -114,7 +114,7 @@ exports.deleteSavedCurrency = function deleteData(url,session, username ,baseCur
 
 };
 
-exports.custInquiry = function getData(url, session, question, callback){
+exports.postQnAResults = function getData(url, session, question, callback){
     var options = {
         url: url,
         method: 'POST',
