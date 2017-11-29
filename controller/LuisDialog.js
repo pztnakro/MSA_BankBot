@@ -5,7 +5,7 @@ var qMaker = require("./QnAMaker")
 
 exports.startDialog = function (bot ) {
 
-    var recognizer = new builder.LuisRecognizer('https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/469a246a-744d-4e83-90fd-f6c70ee587bb?subscription-key=023f5cf1ce4146dc98a17db245ad72b1&verbose=true&timezoneOffset=720&q=');
+    var recognizer = new builder.LuisRecognizer('https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/446a5e2d-ac30-4b55-bb26-295de4c7aab0?subscription-key=4a0669ef12b645fe846261145aba9ffc&verbose=true&timezoneOffset=0&q=');
 
     bot.recognizer(recognizer);
 
