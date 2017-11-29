@@ -1,4 +1,5 @@
 var rest = require('../API/Bankclient');
+var luis = require('./LuisDialog');
 
 exports.displaySavedCurrency = function getBaseCurrency(session, username){
     var url = 'http://kimbotmsa.azurewebsites.net/tables/BankBot';
@@ -21,9 +22,9 @@ exports.updateSavedCurrency = function updateSavedCurrency(session,username,base
             //if (allCurrency[i].baseCurrency === baseCurrency && allCurrency[i].username === username) {
             if (allCurrency[i].username === username) {
                 rest.updateSavedCurrency(url,session,username,baseCurrency, allCurrency[i].id)
-
             }
         }
+        
     });
 };
 
@@ -45,7 +46,7 @@ exports.deleteSavedCurrency = function deleteSavedCurrency(session,username,base
 
 function handleBaseCurrencyResponse(message, session, username) {
     var baseCurrencyResponse = JSON.parse(message);
-    var allCurrency = [];
+    var setBaseCurrency;
     
     for (var index in baseCurrencyResponse) {
         var usernameReceived = baseCurrencyResponse[index].username;
@@ -53,11 +54,15 @@ function handleBaseCurrencyResponse(message, session, username) {
 
         //Convert to lower case whilst doing comparison to ensure the user can type whatever they like
         if (username.toLowerCase() === usernameReceived.toLowerCase()) {
-                allCurrency.push(baseCurrency);
+            setBaseCurrency = baseCurrency;
         }
     }
+    if(!setBaseCurrency){
+        session.send("%s, No base currency is set on your account.", username);
+        session.send("Please set your base currency or type 'Help'.");
+    }else{
         // Print all base Currencies for the user that is currently logged in
-        session.send("%s, you have set %s as your base currency.", username, allCurrency);
-        //session.send("%s, No base currency is set on your account.", username);
-    
+        session.conversationData["currency"] = setBaseCurrency;
+        session.send("%s, you have set %s as your base currency.", username, setBaseCurrency.toUpperCase());
+    }
 }

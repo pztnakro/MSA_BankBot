@@ -10,19 +10,15 @@ exports.displayExchangeRateCards = function getExchangeRate(baseCurrency, target
 function displayExchangeRateCards(message, bCurrency, tCurrency,session){
     //Parses JSON
     var exRates = JSON.parse(message);
-
-    //Adds first 5 currency information onto list
-    var taCur = tCurrency.toUpperCase().toString();
-    var currList = exRates.rates.taCur;
-    //var currList = exRates.rates.AUD;
+    var eRates = exRates.rates;
+    var taCurrency = Object.keys(eRates);
     var searchDate = exRates.date;
     var currencyItems = [];
 
     for(var i = 0; i < 1; i++){
         var currItems = {};
         currItems.title = "Base Currency: "+bCurrency.toUpperCase().toString();
-        currItems.value = currList;
-        //currItems.value = currList.toString();
+        currItems.value = eRates[taCurrency].toString();
         currencyItems.push(currItems);
     }
 
@@ -44,7 +40,7 @@ function displayExchangeRateCards(message, bCurrency, tCurrency,session){
                         },
                         {
                             "type": "TextBlock",
-                            "text": "Exchange Rates dated on "+searchDate
+                            "text": "Exchange Rates dated: "+searchDate
                         }
                     ]
                 },
